@@ -1,0 +1,7 @@
+.github
+.vscode
+*.lock
+package.lock.json
+yarn.lock
+*.yml
+*.json
