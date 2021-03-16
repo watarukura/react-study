@@ -4,7 +4,7 @@ name: Check and Test
 
 jobs:
   lint:
-    name: Format Check JS
+    name: Lint Check JS
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
