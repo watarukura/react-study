@@ -3,7 +3,7 @@ on: pull_request
 name: Check and Test
 
 jobs:
-  format:
+  lint:
     name: Format Check JS
     runs-on: ubuntu-latest
     steps:
@@ -27,4 +27,27 @@ jobs:
           type: ${{ job.status }}
           channel: "#ci_my_projects"
           job_name: ":javascript: *Lint Check JS*"
+          url: ${{ secrets.SLACK_WEBHOOK }}
+  
+  audit:
+    name: Audit Check JS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Install Dependencies
+        run: yarn audit
+
+      - name: Notify Result to Slack
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          channel: "#ci_my_projects"
+          job_name: ":javascript: *Audit Check JS*"
           url: ${{ secrets.SLACK_WEBHOOK }}
