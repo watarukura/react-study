@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: "14.x"
 
-      - name: Install Dependencies
+      - name: Audit Check
         run: yarn audit
 
       - name: Notify Result to Slack
