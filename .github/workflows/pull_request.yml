@@ -1,0 +1,56 @@
+on: pull_request
+
+name: Check and Test
+
+jobs:
+  js:
+    name: Lint Check JS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Check lint
+        run: npm run lint
+
+      - name: Notify Result to Slack
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          channel: "#ci_my_projects"
+          job_name: ":javascript: *Lint Check JS*"
+          url: ${{ secrets.SLACK_WEBHOOK }}
+
+  other:
+    name: Lint Check Exclude JS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Check lint
+        run: npm run lint:prettier
+
+      - name: Notify Result to Slack
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          channel: "#ci_my_projects"
+          job_name: ":html5: *Lint Check CSS/HTML*"
+          url: ${{ secrets.SLACK_WEBHOOK }}
